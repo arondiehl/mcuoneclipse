@@ -146,10 +146,19 @@ struct rawarc {
 #define ROUNDUP(x,y)	  ((((x)+(y)-1)/(y))*(y))
 
 /*
+ * Possible states of profiling.
+ */
+typedef enum {GMON_PROF_ON, GMON_PROF_BUSY, GMON_PROF_ERROR, GMON_PROF_OFF} Gmon_State;
+/*#define	GMON_PROF_ON	  0
+#define	GMON_PROF_BUSY	1
+#define	GMON_PROF_ERROR	2
+#define	GMON_PROF_OFF	  3*/
+
+/*
  * The profiling data structures are housed in this structure.
  */
 struct gmonparam {
-	int		state;
+	Gmon_State		state;
 	u_short		*kcount;    /* histogram PC sample array */
 	size_t		kcountsize; /* size of kcount[] array in bytes */
 	u_short		*froms;     /* array of hashed 'from' addresses. The 16bit value is an index into the tos[] array */
@@ -163,13 +172,6 @@ struct gmonparam {
 };
 extern struct gmonparam _gmonparam;
 
-/*
- * Possible states of profiling.
- */
-#define	GMON_PROF_ON	  0
-#define	GMON_PROF_BUSY	1
-#define	GMON_PROF_ERROR	2
-#define	GMON_PROF_OFF	  3
 
 void _mcleanup(void); /* routine to be called to write gmon.out file */
 void _monInit(void); /* initialization routine */
