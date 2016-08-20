@@ -235,9 +235,10 @@ void _mcount_internal(uint32_t *frompcindex, uint32_t *selfpc) {
   struct gmonparam *p = &_gmonparam;
 
   if (!already_setup) {
+    extern char _stext;
     extern char __etext; /* end of text/code symbol, defined by linker */
     already_setup = 1;
-    monstartup(0x410, (uint32_t)&__etext);
+    monstartup((uint32_t)&_stext, (uint32_t)&__etext);
   }
   /*
    *	check that we are profiling
